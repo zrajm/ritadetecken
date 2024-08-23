@@ -3601,7 +3601,7 @@ kök 3		Same as 'kök 1'.
               [h, w] = [h, w].map(x => Math.round((x || 0) / 2)) // halve height & width
               const classes = [...(/^!/.test(img) ? ['imgerr']   : []),
                                ...(i === 0        ? ['selected'] : [])].join(' ')
-              return `<img loading=lazy src=${img.replace(/^!/, '')}.svg class="${classes}" width=${w} height=${h}>`
+              return `<img loading=lazy src=pic/${img.replace(/^!/, '')}.svg class="${classes}" width=${w} height=${h}>`
             }),
           `</div>`],
           (img.length > 1 ? '[kombinerad]' : ''),
