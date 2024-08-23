@@ -213,7 +213,7 @@
       if (hashStr === prevStr) { return }
       prevStr = hashStr
 
-      $('#result div').css({ display: 'none' }) // hide everything
+      $('#result>div').css({ display: 'none' }) // hide everything
 
       // Find matching <div> and show them, and also show their parent element.
       const strs = hashStr.split(',').map(x => x.trim()).filter(x => x !== '')
@@ -3595,7 +3595,7 @@ kök 3		Same as 'kök 1'.
   $('#result').append(
     data.map(({id, img, trans, swe, err = '', log = ''}) => {
       return [
-        `<div ${ (idRegex.test(id) ? 'id=' : '') + id }>`, [
+        `<div ${ (idRegex.test(id) ? 'id=' : '') + id } style=display:none>`, [
           `<div class=img>`, [
             img.map(([img, w, h], i) => {
               [h, w] = [h, w].map(x => Math.round((x || 0) / 2)) // halve height & width
