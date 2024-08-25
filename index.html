@@ -3610,7 +3610,12 @@ kök 3		Same as 'kök 1'.
               x.replace(/((?!\u{10c960})[\u{10c900}-\u{10c9ff}]+)/gu, x => `<a>${x}</a>`)
             ).join('<br>')],
           '</span>',
-          swe.sort(by_swedish).join('<br>'),
+          swe.sort(by_swedish).map(x =>
+            x.replace(/(?<=\[)(\d{5}|🛇)(?=\])/gu, x =>
+              x === '🛇'
+                ? `<span title="Saknas i Svenskt teckenspråkslexikon.">🛇</span>`
+                : `<a>${x}</a>`)
+          ).join('<br>'),
           log && `<small class=log>Korrigering: ${log}</small>`,
           err && `<small class=note>Kommentar: ${err}${img.some(x => /!$/.test(x[0])) ? ' (bildfel)' : ''}</small>`],
         `</div>`,
