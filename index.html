@@ -3631,16 +3631,19 @@ kök 3		Same as 'kök 1'.
     }))
 </script>
 
-<script>$(() => {
-  // Insert 'href' attribute in <a> tags with transcription.
+<script type=module>
+  // Make <a> tags without 'href' point to lexicon.
+  const lexUrl = (
+    /^https:/.test(location)
+      ? 'https://zrajm.github.io'
+      : 'http://zrajm.github.devel'
+  ) + '/teckentranskription/lexicon.html#'
   for (const el of $('a:not([href])')) {
     el.target = '_blank'
-    //el.href = 'https://zrajm.github.io/teckentranskription/lexicon.html#'
-    el.href = 'http://zrajm.github.devel/teckentranskription/lexicon.html#'
-      + encodeURIComponent(`="${el.innerText}"`)
-    el.title = 'Länk till Svenskt teckenspråkslexikon. (Öppnas i ny flik.)'
+    el.href = `${lexUrl}="${encodeURIComponent(el.innerText)}"`
+    el.title = 'Länk till teckenspråkslexikon. (Öppnas i ny flik.)'
   }
-})</script>
+</script>
 
 <script>
   function newlex(lexicon) {
