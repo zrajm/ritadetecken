@@ -54,14 +54,22 @@
     overflow-y:scroll;
   }
   body{margin:0}
-  summary{&:hover{background:#eee}cursor:pointer}
+  summary{
+    cursor:pointer;
+    border-radius:2px;
+    &:hover{
+      background:#ddd;
+      box-shadow:4px 0 #ddd,-4px 0 #ddd;
+    }
+  }
   form#q{
     background:#ddd;
     padding:3px 3px 4px;
     box-shadow:0 3px 6px #0006;
     margin-bottom:8px;
     position:sticky;top:0;z-index:1;
-    & input{
+    &>input{
+      &:focus{outline:4px solid #0004}
       font-family:inherit;
       font-size:inherit;
       border:1px solid #000;border-radius:40px;
@@ -71,7 +79,6 @@
       padding:8px 24px 8px calc(24px + 24px);
       background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="m22 24-8-8 2-2 8 8zM16.1 9.4a6.7 6.7 0 1 0-13.4 0 6.7 6.7 0 0 0 13.4 0zm2.7 0A9.4 9.4 0 1 1 0 9.4a9.4 9.4 0 0 1 18.8 0z" fill="%23888"></path></svg>') no-repeat 14px 8px #fff;
     }
-    & input:focus{outline:4px solid #0004}
   }
   #result{
     margin:0 4px;
