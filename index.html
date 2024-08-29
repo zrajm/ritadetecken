@@ -74,10 +74,11 @@
       font-size:inherit;
       border:1px solid #000;border-radius:40px;
       margin:4px;
-      width:calc(100% - (4px * 2));
+      width:calc(100% - 54px);
       box-sizing:border-box;
       padding:8px 24px 8px calc(24px + 24px);
       background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="m22 24-8-8 2-2 8 8zM16.1 9.4a6.7 6.7 0 1 0-13.4 0 6.7 6.7 0 0 0 13.4 0zm2.7 0A9.4 9.4 0 1 1 0 9.4a9.4 9.4 0 0 1 18.8 0z" fill="%23888"></path></svg>') no-repeat 14px 8px #fff;
+      margin-right:24px !important;
     }
   }
   #result{
@@ -138,9 +139,9 @@
     }
   }
   div.hover{
-    position:fixed;z-index:1;right:0;top:60px;
+    position:fixed;z-index:1;right:0;top:0;
     overflow:auto; max-height:calc(100% - 82px);
-    padding: 0 4px;
+    padding: 4px;
     &>details{
       &>summary{text-align:right}
       &>details{
@@ -242,7 +243,7 @@
 </form>
 <div class=hover>
   <details>
-    <summary>Errata</summary>
+    <summary style="list-style-type:none"><svg height="17" width="19"><path d="M0 0h19v3H0zm0 14h19v3H0zm0-7h19v3H0z"></path></svg></summary>
     <details>
       <summary>Handskrivna</summary>
       <ul>
@@ -272,32 +273,33 @@
     </details>
     <details id=errata><summary>Varningar</summary></details>
     <details id=log><summary>Utförda korrigeringar</summary></details>
-  </details>
-  <details>
-    <summary>Om</summary>
+    <details>
+      <summary>Om</summary>
 
-    <p>Bilder från <a href="https://www.ritadetecken.se/">ritadetecken.se</a>.
+      <p>Bilder från <a href="https://www.ritadetecken.se/">ritadetecken.se</a>.
 
-    <p>Det finns kommentarer för varje tecken där fel eller konstigheter har
-    hittats, och där det är möjligt har felen också korrigerats. För varje
-    tecken kan du se både <a href="#kommentar:">kommentarer</a> och
-    vilka <a href="#korrigering:">korrigeringar</a> som applicerats. Det finns
-    också listor på vilka korrigeringar som utförts under ”Errata” ovan.
+      <p>Det finns kommentarer för varje tecken där fel eller konstigheter har
+      hittats, och där det är möjligt har felen också korrigerats. För varje
+      tecken kan du se både <a href="#kommentar:">kommentarer</a> och
+      vilka <a href="#korrigering:">korrigeringar</a> som applicerats. Det
+      finns också listor på vilka korrigeringar som utförts under ”Errata”
+      ovan.
 
-    <p>Korrigeringar som utförts är:
+      <p>Korrigeringar som utförts är:
 
-    <ul>
-      <li>Samma bild används ibland för flera olika tecken – här har de
-        kombinerats. I somliga fall har flera bilder som bara skiljer sig
-        obetydligt från varandra, i dessa fall har den ”bästa” bilder valts ut
-        här.
-      <li>De svenska uppslagsorden gjort mer enhetliga. Lemma-nummer, som
-        används när det finns fler än ett tecken som motsvarar ett svenskt ord
-        (som till exempel ”få 1” och ”få 2”) separeras alltid från det svenska
-        ordet med ett mellanslag (eller understryk om uppslagsordet skrivs med
-        siffror).
-      <li><a href="#bildfel">Bildfel</a> har markerats med en röd bård.
-    </ul>
+      <ul>
+        <li>Samma bild används ibland för flera olika tecken – här har de
+          kombinerats. I somliga fall har flera bilder som bara skiljer sig
+          obetydligt från varandra, i dessa fall har den ”bästa” bilder valts
+          ut här.
+        <li>De svenska uppslagsorden gjort mer enhetliga. Lemma-nummer, som
+          används när det finns fler än ett tecken som motsvarar ett svenskt
+          ord (som till exempel ”få 1” och ”få 2”) separeras alltid från det
+          svenska ordet med ett mellanslag (eller understryk om uppslagsordet
+          skrivs med siffror).
+        <li><a href="#bildfel">Bildfel</a> har markerats med en röd bård.
+      </ul>
+    </details>
   </details>
 </div>
 <!--
