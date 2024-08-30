@@ -1,6 +1,6 @@
 <!DOCTYPE html><!--*-ispell-dictionary:"sv"; js-indent-level: 2; css-indent-offset: 2 -*-->
 <html onclick="$('#menu')[0].open=false"
-      onkeydown="if(event.key==='/'){event.preventDefault();$('#q>input')[0].focus()}">
+      onkeydown="if(event.key==='/'){$('#q>input')[0].focus();return false}">
 <meta charset=UTF-8>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv=content-language content=sv>
@@ -124,7 +124,7 @@
 </style>
 <script src=jquery-3.7.1.slim.min.js></script>
 <script src=lexicon-data.js></script>
-<form id=q onsubmit=event.preventDefault()>
+<form id=q onsubmit="return false">
   <input autofocus title="Search (/)"
     onkeydown=event.stopPropagation()
     oninput=location.hash=encodeURIComponent(this.value.trim())>
