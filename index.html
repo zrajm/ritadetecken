@@ -1,5 +1,6 @@
 <!DOCTYPE html><!--*-ispell-dictionary:"sv"; js-indent-level: 2; css-indent-offset: 2 -*-->
-<html onclick="$('#menu')[0].open=false">
+<html onclick="$('#menu')[0].open=false"
+      onkeydown="if(event.key==='/'){event.preventDefault();$('#q>input')[0].focus()}">
 <meta charset=UTF-8>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv=content-language content=sv>
@@ -124,18 +125,12 @@
 <script src=jquery-3.7.1.slim.min.js></script>
 <script src=lexicon-data.js></script>
 <form id=q onsubmit=event.preventDefault()>
-  <input autofocus oninput=location.hash=encodeURIComponent(this.value.trim())>
+  <input autofocus title="Search (/)"
+    onkeydown=event.stopPropagation()
+    oninput=location.hash=encodeURIComponent(this.value.trim())>
   <script type=module>
     const input = $('form#q input')[0]
     $(window).on('hashchange load', updateSearch)
-    $(document).on('keydown', e => {
-      if (e.target === input) { return } // already focused
-      if (e.ctrlKey && e.key === 'v') { input.focus() } // Ctrl-v
-      if (e.altKey || e.ctrlKey) { return }             // Other Alt or Ctrl keys
-      if (e.key.length === 1 || e.key === 'Enter' || e.key === 'Shift') {
-        input.focus()
-      }
-    })
 
     //const regexify = str => RegExp(`(?<![\\p{L}\\p{N}_])${str.replace(/\*/g, '.*?')}`, 'umi')
 
@@ -237,7 +232,6 @@
         <li>När man skrollar uppåt ska sökformuläret dyka upp omedelbart
         <li>”Utförda korrigeringar” och ”Varningar” ska länka till lexikonet
         <li>Städa bort död kod och kommentarer
-        <li>’/’ ska fokusera sökfältet (inte som nu, vilken tangent som helst)
         <li>Tangentbordsgenvägar ska funka för att öppna/stänga menyn
       </ul>
     </details>
