@@ -139,24 +139,21 @@
       color:#008;
     }
   }
-  div.hover{
+  #menu{
     position:fixed;z-index:1;right:0;top:0;
-    overflow:auto; max-height:calc(100% - 82px);
-    padding: 4px;
+    margin:6px;
+    overflow:auto;max-height:calc(100% - (6px * 2));box-sizing:border-box;
+    &>summary{text-align:right}
     &>details{
-      &>summary{text-align:right}
-      &>details{
-        ul{padding-left:1em;margin:0}
-        summary{margin-left:-1em}
-        padding-left:1em;
-      }
-      margin:4px 2px 4px auto;
-      background:#fff;
-      border-radius:6px;
-      padding:5px 10px;
-      box-shadow:0 3px 6px #0006;
-      width:fit-content;max-width:30em;
+      ul{padding-left:1em;margin:0}
+      summary{margin-left:-1em}
+      padding-left:1em;
     }
+    background:#fff;
+    border-radius:6px;
+    padding:5px 10px;
+    box-shadow:0 3px 6px #0006;
+    width:fit-content;max-width:30em;
   }
   div[id]{margin:0 8px}
   div#errata{
@@ -242,67 +239,65 @@
     }
   </script>
 </form>
-<div class=hover onclick=event.stopPropagation()>
-  <details id=menu>
-    <summary style="list-style-type:none"><svg height="17" width="19"><path d="M0 0h19v3H0zm0 14h19v3H0zm0-7h19v3H0z"></path></svg></summary>
-    <details>
-      <summary>Handskrivna</summary>
-      <ul>
-        <li><a href="#bildfel!">felaktiga bilder</a> (hovra för detaljer)
-          <ul>
-            <li>􌥔􌥙􌥈􌥈􌥓􌥙􌤟􌥼􌥣􌥲􌦊 <a href="#snöre">snöre</a> (Bild saknar rörelse för ena handen. Se: <a href="#*snöre*,=spelar ingen roll,*tråd*">*snöre*,spelar ingen roll,*tråd*</a>).
-            <li><a href="#=öra,=öron">öra,öron</a> – bilderna är omkastade
-            <li><a href="#välja 2">välja 2</a> har fel bild; ska ha samma som <a href="#=val (politiskt)">val (politiskt)</a>
-            <li>'kappa 1' & 'kappa 2' är samma
-          </ul>
-        <li><a href="#?">tveksamma bilder</a> (hovra för detaljer)
-          <ul>
-            <li><a href="#deras,dess">􌤢􌤵􌥗􌥵􌥪  deras, dess</a> (vad göra med dessa?)
-          </ul>
-        <li>Samma bild kan användas
-          <ul>
-            <li>􌤪􌤴􌥙􌤪􌤴􌥙􌥱􌦀􌥼􌥻 <a href="#=cykel 2,=cykla 2,=sparkstötting">cykel 2,cykla 2,sparkstötting</a>
-              (Jag tror dessa är olika och inte ska kombineras.)
-            <li>􌤵􌥘􌥃􌥃􌤵􌥘􌥫􌥺 <a href="#=fjäril,=ängel">fjäril,ängel</a> (Bilden för ’ängel’ är fel, men ’fjäril’-bilden kan användas för bägge.)
-            <li><a href="#=deras,=sin">􌤢􌤵􌥗􌦄􌥪􌥻 deras, sin</a>
-          </ul>
-        <li><b>Tecken som inte finns i <i>Svenskt teckenspråkslexikon</i></b> (skillnader mellan TAKK och svenskt teckenspråk?)
-          <ul>
-            <li><a href="#=manus">􌥃􌥔􌥘􌥃􌥓􌥘􌤟􌥣􌥼􌥻 manus</a> (<a>􌤢􌥔􌤸􌤩􌤴􌥙􌤟􌥣􌥼􌥻</a> eller <a>􌤴􌥗􌥋􌥋􌤴􌤶􌤟􌥼􌥹􌦉􌥼􌥧􌥼􌦅􌥼􌤟</a> i lexikon)
-          </ul>
-      </ul>
-    </details>
-    <details id=errata><summary>Varningar</summary></details>
-    <details id=log><summary>Utförda korrigeringar</summary></details>
-    <details>
-      <summary>Om</summary>
-
-      <p>Bilder från <a href="https://www.ritadetecken.se/">ritadetecken.se</a>.
-
-      <p>Det finns kommentarer för varje tecken där fel eller konstigheter har
-      hittats, och där det är möjligt har felen också korrigerats. För varje
-      tecken kan du se både <a href="#kommentar:">kommentarer</a> och
-      vilka <a href="#korrigering:">korrigeringar</a> som applicerats. Det
-      finns också listor på vilka korrigeringar som utförts under ”Errata”
-      ovan.
-
-      <p>Korrigeringar som utförts är:
-
-      <ul>
-        <li>Samma bild används ibland för flera olika tecken – här har de
-          kombinerats. I somliga fall har flera bilder som bara skiljer sig
-          obetydligt från varandra, i dessa fall har den ”bästa” bilder valts
-          ut här.
-        <li>De svenska uppslagsorden gjort mer enhetliga. Lemma-nummer, som
-          används när det finns fler än ett tecken som motsvarar ett svenskt
-          ord (som till exempel ”få 1” och ”få 2”) separeras alltid från det
-          svenska ordet med ett mellanslag (eller understryk om uppslagsordet
-          skrivs med siffror).
-        <li><a href="#bildfel">Bildfel</a> har markerats med en röd bård.
-      </ul>
-    </details>
+<details id=menu onclick=event.stopPropagation()>
+  <summary style="list-style-type:none"><svg height="17" width="19"><path d="M0 0h19v3H0zm0 14h19v3H0zm0-7h19v3H0z"></path></svg></summary>
+  <details>
+    <summary>Handskrivna</summary>
+    <ul>
+      <li><a href="#bildfel!">felaktiga bilder</a> (hovra för detaljer)
+        <ul>
+          <li>􌥔􌥙􌥈􌥈􌥓􌥙􌤟􌥼􌥣􌥲􌦊 <a href="#snöre">snöre</a> (Bild saknar rörelse för ena handen. Se: <a href="#*snöre*,=spelar ingen roll,*tråd*">*snöre*,spelar ingen roll,*tråd*</a>).
+          <li><a href="#=öra,=öron">öra,öron</a> – bilderna är omkastade
+          <li><a href="#välja 2">välja 2</a> har fel bild; ska ha samma som <a href="#=val (politiskt)">val (politiskt)</a>
+          <li>'kappa 1' & 'kappa 2' är samma
+        </ul>
+      <li><a href="#?">tveksamma bilder</a> (hovra för detaljer)
+        <ul>
+          <li><a href="#deras,dess">􌤢􌤵􌥗􌥵􌥪  deras, dess</a> (vad göra med dessa?)
+        </ul>
+      <li>Samma bild kan användas
+        <ul>
+          <li>􌤪􌤴􌥙􌤪􌤴􌥙􌥱􌦀􌥼􌥻 <a href="#=cykel 2,=cykla 2,=sparkstötting">cykel 2,cykla 2,sparkstötting</a>
+            (Jag tror dessa är olika och inte ska kombineras.)
+          <li>􌤵􌥘􌥃􌥃􌤵􌥘􌥫􌥺 <a href="#=fjäril,=ängel">fjäril,ängel</a> (Bilden för ’ängel’ är fel, men ’fjäril’-bilden kan användas för bägge.)
+          <li><a href="#=deras,=sin">􌤢􌤵􌥗􌦄􌥪􌥻 deras, sin</a>
+        </ul>
+      <li><b>Tecken som inte finns i <i>Svenskt teckenspråkslexikon</i></b> (skillnader mellan TAKK och svenskt teckenspråk?)
+        <ul>
+          <li><a href="#=manus">􌥃􌥔􌥘􌥃􌥓􌥘􌤟􌥣􌥼􌥻 manus</a> (<a>􌤢􌥔􌤸􌤩􌤴􌥙􌤟􌥣􌥼􌥻</a> eller <a>􌤴􌥗􌥋􌥋􌤴􌤶􌤟􌥼􌥹􌦉􌥼􌥧􌥼􌦅􌥼􌤟</a> i lexikon)
+        </ul>
+    </ul>
   </details>
-</div>
+  <details id=errata><summary>Varningar</summary></details>
+  <details id=log><summary>Utförda korrigeringar</summary></details>
+  <details>
+    <summary>Om</summary>
+
+    <p>Bilder från <a href="https://www.ritadetecken.se/">ritadetecken.se</a>.
+
+    <p>Det finns kommentarer för varje tecken där fel eller konstigheter har
+    hittats, och där det är möjligt har felen också korrigerats. För varje
+    tecken kan du se både <a href="#kommentar:">kommentarer</a> och
+    vilka <a href="#korrigering:">korrigeringar</a> som applicerats. Det finns
+    också listor på vilka korrigeringar som utförts under ”Errata” ovan.
+
+    <p>Korrigeringar som utförts är:
+
+    <ul>
+      <li>Samma bild används ibland för flera olika tecken – här har de
+        kombinerats. I somliga fall har flera bilder som bara skiljer sig
+        obetydligt från varandra, i dessa fall har den ”bästa” bilder valts ut
+        här.
+      <li>De svenska uppslagsorden gjort mer enhetliga. Lemma-nummer, som
+        används när det finns fler än ett tecken som motsvarar ett svenskt ord
+        (som till exempel ”få 1” och ”få 2”) separeras alltid från det svenska
+        ordet med ett mellanslag (eller understryk om uppslagsordet skrivs med
+        siffror).
+      <li><a href="#bildfel">Bildfel</a> har markerats med en röd bård.
+    </ul>
+  </details>
+</details>
+
 <!--
     Dictionary data (from ritadetecken.se). Columns are: Random ID (used for
     Anki); md5sum (1st six digits, generated from normalized SVG); image width,
