@@ -1,6 +1,6 @@
 <!DOCTYPE html><!--*-ispell-dictionary:"sv"; js-indent-level: 2; css-indent-offset: 2 -*-->
-<html onclick="$('#menu')[0].open=false"
-      onkeydown="if(event.key==='/'){$('#q')[0].focus();return false}">
+<html onclick="$('menu').open=false"
+      onkeydown="if(event.key==='/'){$('q').focus();return false}">
 <meta charset=UTF-8>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv=content-language content=sv>
@@ -122,15 +122,16 @@
   }
   div[id]{margin:0 8px}
 </style>
-<script src=jquery-3.7.1.slim.min.js></script>
+<script>const $=x=>document.getElementById(x)</script>
 <script src=lexicon-data.js></script>
 <form onsubmit="return false">
   <input id=q autofocus title="Search (/)"
     onkeydown=event.stopPropagation()
     oninput=location.hash=encodeURIComponent(this.value.trim())>
   <script type=module>
-    const input = $('#q')[0]
-    $(window).on('hashchange load', updateSearch)
+    const input = $('q')
+    addEventListener('hashchange', updateSearch)
+    addEventListener('load', updateSearch)
 
     // Turn search substring into regex, with additional 'not' attribute (for negated matches).
     const regexify = x => {
@@ -171,7 +172,7 @@
       const regexes = (strs.length > 0 ? strs : ['']).map(regexify)
 
       let count = 0
-      for (const item of $('#result').children()) {
+      for (const item of $('result').children) {
         const text = item.innerHTML.replace(/<[^>]*>/gu, '\n')
         if (regexes.some(regex => regex.test(text) !== regex.not)) {
           count ++
@@ -180,7 +181,7 @@
           item.style.display = 'none'
         }
       }
-      $('#status').text(`${count} ${count === 1 ? 'träff' : 'träffar'}`)
+      $('status').innerText = `${count} ${count === 1 ? 'träff' : 'träffar'}`
     }
   </script>
 </form>
@@ -221,7 +222,6 @@
           stängningskryss
         <li>Varje bild ska visa vilka översättningar som hör ihop med den
           bilden
-        <li>Byt ut jQuery mot en hemmabyggd minimal ersättare?
         <li>När man skrollar uppåt ska sökformuläret dyka upp omedelbart
         <li>”Utförda korrigeringar” och ”Varningar” ska länka till lexikonet
         <li>Tangentbordsgenvägar ska funka för att öppna/stänga menyn
@@ -3356,23 +3356,21 @@ kök 3		Same as 'kök 1'.
 <div id=status></div>
 <main id=result></main>
 <script>
-  // a = array, n = number, x = string, s = css selector
+  // a = array, n = number, x = string
   const quotemeta = x => x.replace(/[*+?^$.[\]{}()|\\]/gu, '\\$&')
   const by_swedish = (a, b) => a.localeCompare(b, 'sv', { sensitivity: 'case' })
   const uniq = a => a.filter((v, i, a) => a.indexOf(v) === i)
   const regexify = x => RegExp(`^${quotemeta(x)}(?: +\\[(?:[!?🛇]|[0-9]{5}(?:\\+[0-9]{5})*)\\])?$`, 'u')
-  const unescapeHtml = x => x.replace(
-    /&(amp|gt|lt);/gi, (_, e) => ({amp: '&', gt: '>', lt: '<'}[e]))
-  const getEntries = (selector, fieldSep) => unescapeHtml($(selector).html())
-    .trim().split(/\s*\n\s*/).map(txt => Object.assign(txt.split(fieldSep), {txt}))
+  const getEntries = (id, fieldSep) => $(id).innerText.trim()
+    .split(/\s*\n\s*/).map(txt => Object.assign(txt.split(fieldSep), {txt}))
   const swelist = a => a.reduce(  // join: "a, b och c"
     (a, x, i, w) => [a, x].join(w.length - i > 1 ? ', ' : ' och '))
   const unbracket = a => a.map(x => x.replace(/\s*\[.*?\]$/, ''))
   const entryName = a => '”' + unbracket(a.swe).sort(by_swedish).join('; ') + '”'
 
-  function logErrs($element, title, errs) {
+  function logErrs(id, title, errs) {
     if (errs.length === 0) { return }
-    $element.append([
+    $(id).insertAdjacentHTML('beforeend', [
       `${title} (${errs.length})`,
       '<ul>', ...errs.map(x => '<li>' + x), '</ul>',
     ].join(''))
@@ -3380,7 +3378,7 @@ kök 3		Same as 'kök 1'.
 
   // HTMLify the '#data' element content.
   const idRegex = /^(NEW)?[a-z0-9]{5}(,(NEW)?[a-z0-9]{5})*$/
-  let data = getEntries('#data', '\t').map(
+  let data = getEntries('data', '\t').map(
     ([id, img, width, height, trans, swe, err]) => ({
       id,
       img: [[img, width, height]],
@@ -3388,9 +3386,6 @@ kök 3		Same as 'kök 1'.
       swe: swe.split(/; */g),
       err
     }))
-
-  const $errata = $('#errata')
-  const $log = $('#log')
 
   // Find duplicate Swedish terms. (All entries need to have at least one
   // unique Swedish translation in order for the rest of the fixes to be
@@ -3414,7 +3409,7 @@ kök 3		Same as 'kök 1'.
   ), {})
 
   logErrs(
-    $errata, 'Duplicerade svenska termer',
+    'errata', 'Duplicerade svenska termer',
     Object.entries(wordEntries)
       .filter(([k, v]) => v.length > 1)
       .map(([k, v]) =>
@@ -3427,7 +3422,7 @@ kök 3		Same as 'kök 1'.
 
   // Generate list of rules to apply (don't include broken rules).
   let seen = {}
-  const rules = getEntries('#imagefixes', /\s*=>\s*/).reduce((a, rule) => {
+  const rules = getEntries('imagefixes', /\s*=>\s*/).reduce((a, rule) => {
     let entries
     try {
       let seen2 = {}
@@ -3486,17 +3481,13 @@ kök 3		Same as 'kök 1'.
       data.splice(data.indexOf(entry), 1)
     }
   }
-
-  logErrs($log, 'Bildfixar', fixlog)
-  logErrs($errata, 'Oapplicerade bildfixar', errlog)
+  logErrs('log', 'Bildfixar', fixlog)
+  logErrs('errata', 'Oapplicerade bildfixar', errlog)
 
   { // Apply spellfixes.
     let errlog = [] // failed fixes
     let fixlog = [] // applied fixes
-
-    const spellfixes = Object.fromEntries(getEntries('#spellfixes', /\s*=>\s*/))
-    let seen = {}
-    for (const rule of getEntries('#spellfixes', /\s*=>\s*/)) {
+    for (const rule of getEntries('spellfixes', /\s*=>\s*/)) {
       const [sourceStr, targetStr] = rule
       try {
         if (!wordEntries[sourceStr]) {
@@ -3511,9 +3502,8 @@ kök 3		Same as 'kök 1'.
         errlog.push(`${err.message} (i regel ”${rule.txt}”)`)
       }
     }
-
-    logErrs($log, 'Stavningsfixar', fixlog)
-    logErrs($errata, 'Oapplicerade stavningsfixar', errlog)
+    logErrs('log', 'Stavningsfixar', fixlog)
+    logErrs('errata', 'Oapplicerade stavningsfixar', errlog)
 
     /////////////////////////
     // Check lemma numbers.
@@ -3538,7 +3528,7 @@ kök 3		Same as 'kök 1'.
     // Display error for each `mustExist` that doesn't exist.
     const errs = mustExist.filter(x => !(wordEntries[x] || []).length)
 
-    logErrs($errata, 'Felaktigt numrerade ord', errs.sort(by_swedish))
+    logErrs('errata', 'Felaktigt numrerade ord', errs.sort(by_swedish))
     // TODO: Display error if there are multiple `mustExist` that refer to same entry
 
     // TODO: Error for each `<word> 1`, `<word> 2` etc which refers to the same entry
@@ -3547,7 +3537,7 @@ kök 3		Same as 'kök 1'.
     // for (const x of mustExist) {
     //   xyz[x]
     //   // if (!wordCount[x]) {
-    //   //   $errata.append(``)
+    //   //   logErrs('errata', ...)
     //   // }
     // }
   }
@@ -3561,14 +3551,14 @@ kök 3		Same as 'kök 1'.
       ), a)
     ), {})
     logErrs(
-      $errata, 'Duplicerade transkriptioner',
+      'errata', 'Duplicerade transkriptioner',
       Object.entries(dups)
         .map(([k, v]) => `“<a href="#=${encodeURIComponent(k)}">${k}</a>” (${v})`),
     )
   }
 
   // Create HTML.
-  $('#result').append(
+  $('result').innerHTML =
     data.map(({id, img, trans, swe, err = '', log = ''}) => {
       return [
         `<div ${ (idRegex.test(id) ? 'id=' : '') + id } style=display:none>`, [
@@ -3595,8 +3585,8 @@ kök 3		Same as 'kök 1'.
           log && `<small class=log>Korrigering: ${log}</small>`,
           err && `<small class=note>Kommentar: ${err}${img.some(x => /!$/.test(x[0])) ? ' (bildfel)' : ''}</small>`],
         `</div>`,
-      ].flat(Infinity).join('')
-    }))
+      ]
+    }).flat(Infinity).join('')
 </script>
 
 <script type=module>
@@ -3606,7 +3596,7 @@ kök 3		Same as 'kök 1'.
       ? 'https://zrajm.github.io'
       : 'http://zrajm.github.devel'
   ) + '/teckentranskription/lexicon.html#'
-  for (const el of $('a:not([href])')) {
+  for (const el of document.querySelectorAll('a:not([href])')) {
     el.target = '_blank'
     el.href = `${lexUrl}="${encodeURIComponent(el.innerText)}"`
     el.title = 'Länk till teckenspråkslexikon. (Öppnas i ny flik.)'
