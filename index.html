@@ -1,6 +1,6 @@
 <!DOCTYPE html><!--*-ispell-dictionary:"sv"; js-indent-level: 2; css-indent-offset: 2 -*-->
 <html onclick="$('#menu')[0].open=false"
-      onkeydown="if(event.key==='/'){$('#q>input')[0].focus();return false}">
+      onkeydown="if(event.key==='/'){$('#q')[0].focus();return false}">
 <meta charset=UTF-8>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv=content-language content=sv>
@@ -28,7 +28,7 @@
       box-shadow:4px 0 #ddd,-4px 0 #ddd;
     }
   }
-  form#q{
+  form{
     background:#ddd;
     padding:3px 3px 4px;
     box-shadow:0 3px 6px #0006;
@@ -124,12 +124,12 @@
 </style>
 <script src=jquery-3.7.1.slim.min.js></script>
 <script src=lexicon-data.js></script>
-<form id=q onsubmit="return false">
-  <input autofocus title="Search (/)"
+<form onsubmit="return false">
+  <input id=q autofocus title="Search (/)"
     onkeydown=event.stopPropagation()
     oninput=location.hash=encodeURIComponent(this.value.trim())>
   <script type=module>
-    const input = $('form#q input')[0]
+    const input = $('#q')[0]
     $(window).on('hashchange load', updateSearch)
 
     // Turn search substring into regex, with additional 'not' attribute (for negated matches).
