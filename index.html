@@ -106,6 +106,7 @@
     position:fixed;z-index:1;right:0;top:0;
     margin:6px;
     overflow:auto;max-height:calc(100% - (6px * 2));box-sizing:border-box;
+    &[open]{box-shadow:0 3px 6px #0006,0 0 0 99999px #0002}
     &>summary{text-align:right}
     & details{
       ul{padding-left:1em;margin:0}
@@ -228,7 +229,6 @@
     <details>
       <summary>Webbgränssnitt</summary>
       <ul>
-        <li>När menyn är öppen ska en skugga kastas över resten av sidan
         <li>När menyn är öppen ska hamburgerikonen bytas till ett
           stängningskryss
         <li>Varje bild ska visa vilka översättningar som hör ihop med den
