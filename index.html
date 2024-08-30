@@ -3376,8 +3376,7 @@ kök 3		Same as 'kök 1'.
     ].join(''))
   }
 
-  // HTMLify the '#data' element content.
-  const idRegex = /^(NEW)?[a-z0-9]{5}(,(NEW)?[a-z0-9]{5})*$/
+  // Read lexicon from '#data' element content.
   let data = getEntries('data', '\t').map(
     ([id, img, width, height, trans, swe, err]) => ({
       id,
@@ -3556,37 +3555,34 @@ kök 3		Same as 'kök 1'.
         .map(([k, v]) => `“<a href="#=${encodeURIComponent(k)}">${k}</a>” (${v})`),
     )
   }
-
-  // Create HTML.
-  $('result').innerHTML =
-    data.map(({id, img, trans, swe, err = '', log = ''}) => {
-      return [
-        `<div ${ (idRegex.test(id) ? 'id=' : '') + id } style=display:none>`, [
-          `<div class=img>`, [
-            img.map(([img, w, h], i) => {
-              [h, w] = [h, w].map(x => Math.round((x || 0) / 2)) // halve height & width
-              const classes = [...(/!$/.test(img) ? ['imgerr']   : []),
-                               ...(i === 0        ? ['selected'] : [])].join(' ')
-              return `<img loading=lazy src=pic/${img.replace(/!$/, '')}.svg class="${classes}" width=${w} height=${h}>`
-            }),
-          `</div>`],
-          (img.length > 1 ? '[kombinerad]' : ''),
-          '<span class=transcr>', [
-            trans.map(x =>        // link transcriptions (exclude leading '/')
-              x.replace(/((?!\u{10c960})[\u{10c900}-\u{10c9ff}]+)/gu, x => `<a>${x}</a>`)
-            ).join('<br>')],
-          '</span>',
-          swe.sort(by_swedish).map(x =>
-            x.replace(/(?<=\[)(\d{5}|🛇)(?=\])/gu, x =>
-              x === '🛇'
-                ? `<span title="Saknas i Svenskt teckenspråkslexikon.">🛇</span>`
-                : `<a>${x}</a>`)
-          ).join('<br>'),
-          log && `<small class=log>Korrigering: ${log}</small>`,
-          err && `<small class=note>Kommentar: ${err}${img.some(x => /!$/.test(x[0])) ? ' (bildfel)' : ''}</small>`],
-        `</div>`,
-      ]
-    }).flat(Infinity).join('')
+  // Create HTML entries from lexicon.
+  const idRegex = /^(NEW)?[a-z0-9]{5}(,(NEW)?[a-z0-9]{5})*$/
+  $('result').innerHTML = data.map(({id, img, trans, swe, err = '', log = ''}) => [
+    `<div ${ (idRegex.test(id) ? 'id=' : '') + id } style=display:none>`, [
+      '<div class=img>', [
+        img.map(([img, w, h], i) => {
+          [h, w] = [h, w].map(x => Math.round((x || 0) / 2)) // halve height & width
+          const classes = [...(/!$/.test(img) ? ['imgerr']   : []),
+                           ...(i === 0        ? ['selected'] : [])].join(' ')
+          return `<img loading=lazy src=pic/${img.replace(/!$/, '')}.svg class="${classes}" width=${w} height=${h}>`
+        }),
+        '</div>'],
+      (img.length > 1 ? '[kombinerad]' : ''),
+      '<span class=transcr>', [
+        trans.map(x =>        // link transcriptions (exclude leading '/')
+          x.replace(/((?!\u{10c960})[\u{10c900}-\u{10c9ff}]+)/gu, '<a>$&</a>')
+        ).join('<br>')],
+      '</span>',
+      swe.sort(by_swedish).map(x =>
+        x.replace(/(?<=\[)(\d{5}|🛇)(?=\])/gu, x =>
+          x === '🛇'
+            ? '<span title="Saknas i Svenskt teckenspråkslexikon.">🛇</span>'
+            : `<a>${x}</a>`)
+      ).join('<br>'),
+      log && `<small class=log>Korrigering: ${log}</small>`,
+      err && `<small class=note>Kommentar: ${err}${img.some(x => /!$/.test(x[0])) ? ' (bildfel)' : ''}</small>`],
+    '</div>',
+  ]).flat(Infinity).join('')
 </script>
 
 <script type=module>
