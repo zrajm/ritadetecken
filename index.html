@@ -132,8 +132,6 @@
     const input = $('form#q input')[0]
     $(window).on('hashchange load', updateSearch)
 
-    //const regexify = str => RegExp(`(?<![\\p{L}\\p{N}_])${str.replace(/\*/g, '.*?')}`, 'umi')
-
     // Turn search substring into regex, with additional 'not' attribute (for negated matches).
     const regexify = x => {
       let attr = { not: false, whole: false }
@@ -161,14 +159,10 @@
       if (rawHash !== input.value) {
         input.value = rawHash
       }
-
-      if (event.type === 'load') { input.setSelectionRange(rawHash.length, rawHash.length) }
-      //if (event.type === 'load') { input.selectionStart = input.selectionEnd = rawHash.length }
-
+      if (event.type === 'load') {
+        input.setSelectionRange(rawHash.length, rawHash.length)
+      }
       const hashStr = rawHash.trim()
-
-      //const isAppended = hashStr.slice(0, prevStr?.length) === prevStr
-
       if (hashStr === prevStr) { return }
       prevStr = hashStr
 
@@ -177,7 +171,6 @@
       const regexes = (strs.length > 0 ? strs : ['']).map(regexify)
 
       let count = 0
-      //for (const item of document.querySelector('#result').children) {
       for (const item of $('#result').children()) {
         const text = item.innerHTML.replace(/<[^>]*>/gu, '\n')
         if (regexes.some(regex => regex.test(text) !== regex.not)) {
@@ -231,7 +224,6 @@
         <li>Byt ut jQuery mot en hemmabyggd minimal ersättare?
         <li>När man skrollar uppåt ska sökformuläret dyka upp omedelbart
         <li>”Utförda korrigeringar” och ”Varningar” ska länka till lexikonet
-        <li>Städa bort död kod och kommentarer
         <li>Tangentbordsgenvägar ska funka för att öppna/stänga menyn
       </ul>
     </details>
@@ -3502,19 +3494,17 @@ kök 3		Same as 'kök 1'.
     let errlog = [] // failed fixes
     let fixlog = [] // applied fixes
 
-    // const spellfixes = getEntries('#spellfixes', /\s*=>\s*/).reduce(
-    //   (a, [k, v]) => ({...a, [k]: v ?? ''}), {})
-
     const spellfixes = Object.fromEntries(getEntries('#spellfixes', /\s*=>\s*/))
     let seen = {}
     for (const rule of getEntries('#spellfixes', /\s*=>\s*/)) {
       const [sourceStr, targetStr] = rule
       try {
-        if (!wordEntries[sourceStr]) { throw Error(`”${sourceStr}” saknas i lexikon`) }
-
+        if (!wordEntries[sourceStr]) {
+          throw Error(`”${sourceStr}” saknas i lexikon`)
+        }
         const targetEntry = wordEntries[sourceStr][0] //FIXME <wordEntries> shouldn't contain lists
-        fixlog.push(targetEntry.log = `Korrigerade ”${sourceStr}” till ”${targetStr}”`)
-
+        fixlog.push(
+          targetEntry.log = `Korrigerade ”${sourceStr}” till ”${targetStr}”`)
         const swe = targetEntry.swe
         swe[swe.indexOf(sourceStr)] = targetStr
       } catch (err) {
@@ -3545,21 +3535,7 @@ kök 3		Same as 'kök 1'.
           x => `${x}${/[0-9]/.test(x) ? '_' : ' '}${i + 1}`)
       ))
 
-    // const count = data
-    //   .flatMap(entry => entry.swe.map(
-    //     // Swedish translations stripped of lemma numbers (eg 'cykel 2' and
-    //     // 'vår 1 (årstid)'), but not leading numbers (eg '6 (siffra)')
-    //     x => x.replace(/[\s_]\d+(?=(?:\s*\(.*?\))?(?:\s*\[.*?\])?$)/, '')))
-    //   .reduce((a, x) => Object.assign(a, {[x]: (a[x] ?? 0) + 1}), {})
-
-
-    // const wordCount = data // {word1: count1, word2: count2...}
-    //   .flatMap(entry => entry.swe)
-    //   .reduce((a, x) => Object.assign(a, {[x]: (a[x] ?? 0) + 1}), {})
-
-
     // Display error for each `mustExist` that doesn't exist.
-    //const errs = mustExist.filter(x => !wordCount[x])
     const errs = mustExist.filter(x => !(wordEntries[x] || []).length)
 
     logErrs($errata, 'Felaktigt numrerade ord', errs.sort(by_swedish))
@@ -3567,13 +3543,13 @@ kök 3		Same as 'kök 1'.
 
     // TODO: Error for each `<word> 1`, `<word> 2` etc which refers to the same entry
     // TODO Find '<word> 1' & '<word> 2' (etc.) with same transcription & merge them
-    let xyz = {}
-    for (const x of mustExist) {
-      xyz[x]
-      // if (!wordCount[x]) {
-      //   $errata.append(``)
-      // }
-    }
+    // let xyz = {}
+    // for (const x of mustExist) {
+    //   xyz[x]
+    //   // if (!wordCount[x]) {
+    //   //   $errata.append(``)
+    //   // }
+    // }
   }
 
   { // Find duplicate transcriptions.
@@ -3636,101 +3612,4 @@ kök 3		Same as 'kök 1'.
     el.title = 'Länk till teckenspråkslexikon. (Öppnas i ny flik.)'
   }
 </script>
-
-<script>
-  function newlex(lexicon) {
-    return lexicon.reduce((a, entry) => {
-      for (const x of entry.slice(2)
-                 .filter(x => x[0] !== '/')
-                 .map(x => x.toLocaleLowerCase())) {
-        a[x] ??= []
-        a[x].push(entry)
-      }
-      return a
-    }, {})
-  }
-
-  let lexicon2
-  let lala
-  function start() {
-    lexicon2 = newlex(lexicon)
-    let i = 0
-    for (const div of $('#result div[TODO]')) {
-      const words = div.innerHTML
-        .split('<br>')
-        .map(x => x.replace(/<(a|img)\b[^>]*>(.*?<\/\1>)?/g, ''))
-
-      const word = (words[0]||'').toLocaleLowerCase()
-      if (words.length === 1 && lexicon2[word]?.length === 1) {
-        i ++
-        const transcript = lexicon2[word][0][1]
-        console.log(i, words[0], transcript)
-
-        $div = $(div)
-        $div.attr('DONE', '')
-        $div.find('a').text(transcript)
-
-      }
-
-      //for (const word of words) {
-      //  console.log("XX",word)
-      //}
-
-    }
-  }
-</script>
-
-<!--
-  
-  $(() => {
-
-  
-  // [id, transcription, translations, tags]
-  const lexicon2 = lexicon.map(entry => entry.reduce((a, x, i) => {
-    i = i<=1 ? i : (x[0] !== '/' ? 2 : 3)
-    return Object.assign(a, { [i]: (i<=1) ? x : [...a[i], x] })
-  }, ['','',[],[]]))
-
-
-
-
-  let i = 0
-  for (const div of $('#result div')) {
-    i ++
-    const words = div.innerHTML.split('<br>')
-      .map(x => x.replace(/<(a|img)\b[^>]*>(.*?<\/\1>)?/g, ''))
-    if (i !== 100) { continue }
-    for (const word of words) {
-      console.log(word)
-
-
-    //     if (id > 20000) {
-    //       console.log(id, translations, tags)
-    //     }
-
-                                                
-    //     for (const translation of translations) {
-    //       //const [id, transcription, , tags]
-    //       //console.log(id, translation)
-    //     }
-
-    }
-  }
-})
--->
-
-
-
-
-<!--script>
-  /* jQuery replacement */
-  function z$(x, d = document) {
-    return typeof x === 'string'
-      ? d.querySelectorAll(x)
-      : Object.create(x, {
-        on: (e, f) => e.split(' ').forEach(e => this.addEventListener(e, f))
-      })
-  }
-</script-->
-
 <!--[eof]-->
