@@ -3561,12 +3561,8 @@ kök 3		Same as 'kök 1'.
     // Display error for each `mustExist` that doesn't exist.
     //const errs = mustExist.filter(x => !wordCount[x])
     const errs = mustExist.filter(x => !(wordEntries[x] || []).length)
-    if (errs.length > 0) {
-      $errata.append([
-        `Felaktigt numrerade ord (${errs.length}):`,
-        '<ul>', ...errs.sort(by_swedish).map(x => `<li>”${x}”`), '</ul>',
-      ].join(''))
-    }
+
+    logErrs($errata, 'Felaktigt numrerade ord', errs.sort(by_swedish))
     // TODO: Display error if there are multiple `mustExist` that refer to same entry
 
     // TODO: Error for each `<word> 1`, `<word> 2` etc which refers to the same entry
