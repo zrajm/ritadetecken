@@ -172,8 +172,6 @@
       if (hashStr === prevStr) { return }
       prevStr = hashStr
 
-      $('#result>div').css({ display: 'none' }) // hide everything
-
       // Find matching <div> and show them, and also show their parent element.
       const strs = hashStr.split(',').map(x => x.trim()).filter(x => x !== '')
       const regexes = (strs.length > 0 ? strs : ['']).map(regexify)
@@ -185,6 +183,8 @@
         if (regexes.some(regex => regex.test(text) !== regex.not)) {
           count ++
           item.style.display = 'inline-block'         // current item
+        } else {
+          item.style.display = 'none'
         }
       }
       $('#status').text(`${count} ${count === 1 ? 'träff' : 'träffar'}`)
