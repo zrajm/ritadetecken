@@ -40,7 +40,7 @@
       font-size:inherit;
       border:1px solid #000;border-radius:40px;
       margin:4px;
-      width:calc(100% - 54px);
+      width:calc(100% - 48px);
       box-sizing:border-box;
       padding:8px 24px 8px calc(24px + 24px);
       background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="m22 24-8-8 2-2 8 8zM16.1 9.4a6.7 6.7 0 1 0-13.4 0 6.7 6.7 0 0 0 13.4 0zm2.7 0A9.4 9.4 0 1 1 0 9.4a9.4 9.4 0 0 1 18.8 0z" fill="%23888"/></svg>') no-repeat 14px 8px #fff;
@@ -105,10 +105,23 @@
   }
   #menu{
     position:fixed;z-index:1;right:0;top:0;
-    margin:6px;
+    margin:6px 4px;
     overflow:auto;max-height:calc(100% - (6px * 2));box-sizing:border-box;
-    &[open]{box-shadow:0 3px 6px #0006,0 0 0 99999px #0004}
-    &>summary{text-align:right}
+    &[open]{
+      box-shadow:0 3px 6px #0006,0 0 0 99999px #0004;
+      path.close{display:inline}
+    }
+    &:not([open]){
+      background:none;
+      box-shadow:none;
+      path.menu{display:inline}
+    }
+    &>summary{
+      text-align:right;
+      list-style:none;
+      &>svg{vertical-align:middle}
+    }
+    & path[class]{display:none}
     & details{
       ul{padding-left:1em;margin:0}
       summary{margin-left:-1em}
@@ -186,7 +199,10 @@
   </script>
 </form>
 <details id=menu onclick=event.stopPropagation()>
-  <summary style="list-style-type:none"><svg height="17" width="19"><path d="M0 0h19v3H0zm0 14h19v3H0zm0-7h19v3H0z"/></svg></summary>
+  <summary><svg height="24" width="24">
+    <path class="menu" d="M3,3h18v3H3zm0,7h18v3H3zm0,7h18v3H3z"/>
+    <path class="close" d="M3,4l2,-2l7,7l7,-7l2,2l-7,7l7,7l-2,2l-7,-7l-7,7l-2,-2l7,-7z"/>
+  </svg></summary>
   <details>
     <summary>Om</summary>
 
@@ -218,8 +234,6 @@
     <details>
       <summary>Webbgränssnitt</summary>
       <ul>
-        <li>När menyn är öppen ska hamburgerikonen bytas till ett
-          stängningskryss
         <li>Varje bild ska visa vilka översättningar som hör ihop med den
           bilden
         <li>När man skrollar uppåt ska sökformuläret dyka upp omedelbart
