@@ -1,6 +1,6 @@
 <!DOCTYPE html><!--*-ispell-dictionary:"sv"; js-indent-level: 2; css-indent-offset: 2 -*-->
 <html onclick="$('menu').open=false"
-      onkeydown="if(event.key==='/'){$('q').focus();return false}">
+      onkeydown="if(event.key==='/'){showForm();$('q').focus();return false}">
 <meta charset=UTF-8>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv=content-language content=sv>
@@ -33,7 +33,7 @@
     padding:3px 3px 4px;
     box-shadow:0 3px 6px #0006;
     margin-bottom:8px;
-    position:sticky;top:0;z-index:1;
+    position:relative;inset:0;z-index:1;
     &>input{
       &:focus{outline:4px solid #0004}
       font-family:inherit;
@@ -141,10 +141,24 @@
   const urlDecode=x=>decodeURIComponent(x.replace(/\+/g,'%20'))
 </script>
 <script src=lexicon-data.js></script>
-<form onsubmit="return false">
+<form id=search onsubmit="return false">
   <input id=q autofocus title="Search (/)"
     onkeydown=event.stopPropagation()
     oninput=location.hash=urlEncode(this.value)>
+  <script type=module>
+    const $form = $('search')
+    window.showForm = (show = true) => { // global function
+      let e = document.activeElement
+      if (!show && e.id === 'q') { e.blur() }
+      $form.style.position = show ? 'sticky' : 'relative'
+    }
+    let prevY = 0, prevShow
+    addEventListener('scroll', () => {
+      const y = pageYOffset, show = y < prevY // scroll up = show
+      if (show !== prevShow) { showForm(prevShow = show) }
+      prevY = y
+    })
+  </script>
   <script type=module>
     addEventListener('hashchange', search)
     addEventListener('load', search)
@@ -234,7 +248,6 @@
       <ul>
         <li>Varje bild ska visa vilka översättningar som hör ihop med den
           bilden
-        <li>När man skrollar uppåt ska sökformuläret dyka upp omedelbart
         <li>”Utförda korrigeringar” och ”Varningar” ska länka till lexikonet
       </ul>
     </details>
