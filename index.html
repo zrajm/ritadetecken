@@ -142,8 +142,8 @@
     onkeydown=event.stopPropagation()
     oninput=location.hash=encodeURIComponent(this.value)>
   <script type=module>
-    addEventListener('hashchange', updateSearch)
-    addEventListener('load', updateSearch)
+    addEventListener('hashchange', search)
+    addEventListener('load', search)
 
     // Turn search substring into regex, with additional 'not' attribute (for
     // negative matching).
@@ -164,25 +164,25 @@
       return Object.assign(regex, { not: attr.not })
     }
 
-    const input = $('q')
+    const $q = $('q')
     const index = [...$('result').children].map(
       t => [t, t.innerHTML.replace(/<[^>]*>/gu, '\n').trim()])
     let prevStr
-    function updateSearch(event) {
-      const rawHash = decodeURIComponent(location.hash).slice(1)
-      if (rawHash !== input.value) {
-        input.value = rawHash
+    function search(evt) {
+      const urlstr = decodeURIComponent(location.hash).slice(1)
+      if (urlstr !== $q.value) {
+        $q.value = urlstr
       }
-      if (event.type === 'load') { // onload: put cursor at end of <input>
-        input.setSelectionRange(rawHash.length, rawHash.length)
+      if (evt.type === 'load') { // onload: put cursor at end of <input>
+        $q.setSelectionRange(urlstr.length, urlstr.length)
       }
-      const hashStr = rawHash.trim()
-      if (hashStr === prevStr) { return } // search string unchanged
-      prevStr = hashStr
+      const str = urlstr.trim()
+      if (str === prevStr) { return } // search string unchanged
+      prevStr = str
 
       // Find matching <div> and show them, and also show their parent element.
-      const strs = hashStr.split(/\s*,\s*/).filter(x=>x)
-      const regexes = (strs.length ? strs : ['']).map(regexify)
+      const substrs = str.split(/\s*,\s*/).filter(x=>x)
+      const regexes = (substrs.length ? substrs : ['']).map(regexify)
       const i = index.filter(([elem, text]) => {
         const isMatch = regexes.some(regex => regex.test(text) !== regex.not)
         elem.style.display = isMatch ? 'inline-block' : 'none'
