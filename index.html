@@ -135,12 +135,16 @@
   }
   div[id]{margin:0 8px}
 </style>
-<script>const $=x=>document.getElementById(x)</script>
+<script>
+  const $=x=>document.getElementById(x)
+  const urlEncode=x=>x.replace(/[^,]/gui,x=>x===' '?'+':encodeURIComponent(x))
+  const urlDecode=x=>decodeURIComponent(x.replace(/\+/g,'%20'))
+</script>
 <script src=lexicon-data.js></script>
 <form onsubmit="return false">
   <input id=q autofocus title="Search (/)"
     onkeydown=event.stopPropagation()
-    oninput=location.hash=encodeURIComponent(this.value)>
+    oninput=location.hash=urlEncode(this.value)>
   <script type=module>
     addEventListener('hashchange', search)
     addEventListener('load', search)
@@ -169,7 +173,7 @@
       t => [t, t.innerHTML.replace(/<[^>]*>/gu, '\n').trim()])
     let prevStr
     function search(evt) {
-      const urlstr = decodeURIComponent(location.hash).slice(1)
+      const urlstr = urlDecode(location.hash).slice(1)
       if (urlstr !== $q.value) {
         $q.value = urlstr
       }
@@ -3419,7 +3423,7 @@ kök 3		Same as 'kök 1'.
     Object.entries(wordEntries)
       .filter(([k, v]) => v.length > 1)
       .map(([k, v]) =>
-        `“<a href="#=${encodeURIComponent(k)}">${k}</a>” (${v.length})`)
+        `“<a href="#=${urlEncode(k)}">${k}</a>” (${v.length})`)
   )
 
   // Apply imagefixes to <data> (side effect: possible error output to DOM)
@@ -3559,7 +3563,7 @@ kök 3		Same as 'kök 1'.
     logErrs(
       'errata', 'Duplicerade transkriptioner',
       Object.entries(dups)
-        .map(([k, v]) => `“<a href="#=${encodeURIComponent(k)}">${k}</a>” (${v})`),
+        .map(([k, v]) => `“<a href="#=${urlEncode(k)}">${k}</a>” (${v})`),
     )
   }
   // Create HTML entries from lexicon.
