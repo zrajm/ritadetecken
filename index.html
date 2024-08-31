@@ -140,61 +140,55 @@
 <form onsubmit="return false">
   <input id=q autofocus title="Search (/)"
     onkeydown=event.stopPropagation()
-    oninput=location.hash=encodeURIComponent(this.value.trim())>
+    oninput=location.hash=encodeURIComponent(this.value)>
   <script type=module>
-    const input = $('q')
     addEventListener('hashchange', updateSearch)
     addEventListener('load', updateSearch)
 
-    // Turn search substring into regex, with additional 'not' attribute (for negated matches).
+    // Turn search substring into regex, with additional 'not' attribute (for
+    // negative matching).
     const regexify = x => {
       let attr = { not: false, whole: false }
-      {
-        let attrName
-        const attrNames = { '-': 'not', '=': 'whole' }
-        while (attrName = attrNames[x[0]]) {
-          attr[attrName] = !attr[attrName]
-          x = x.slice(1)
-        }
+      let attrName
+      const attrNames = { '-': 'not', '=': 'whole' }
+      while (attrName = attrNames[x[0]]) {
+        attr[attrName] = !attr[attrName]
+        x = x.slice(1)
       }
       const regex = RegExp(
         (attr.whole ? '^' : '')
           + '(?<![\\p{L}\\p{N}_])'
           + x.replace(/[$^\]\[{}()|?*+]/g, x => ({'*':'.*?'}[x] || '\\'+x))
           + (attr.whole ? '\\s*[0-9]*\\s*(?:\\([^()]*\\)|\\[[^\\[\\]]*\\])?$' : ''),
-        'umi'
-      )
+        'umi')
       return Object.assign(regex, { not: attr.not })
     }
 
+    const input = $('q')
+    const index = [...$('result').children].map(
+      t => [t, t.innerHTML.replace(/<[^>]*>/gu, '\n').trim()])
     let prevStr
-    function updateSearch() {
+    function updateSearch(event) {
       const rawHash = decodeURIComponent(location.hash).slice(1)
       if (rawHash !== input.value) {
         input.value = rawHash
       }
-      if (event.type === 'load') {
+      if (event.type === 'load') { // onload: put cursor at end of <input>
         input.setSelectionRange(rawHash.length, rawHash.length)
       }
       const hashStr = rawHash.trim()
-      if (hashStr === prevStr) { return }
+      if (hashStr === prevStr) { return } // search string unchanged
       prevStr = hashStr
 
       // Find matching <div> and show them, and also show their parent element.
-      const strs = hashStr.split(',').map(x => x.trim()).filter(x => x !== '')
-      const regexes = (strs.length > 0 ? strs : ['']).map(regexify)
-
-      let count = 0
-      for (const item of $('result').children) {
-        const text = item.innerHTML.replace(/<[^>]*>/gu, '\n')
-        if (regexes.some(regex => regex.test(text) !== regex.not)) {
-          count ++
-          item.style.display = 'inline-block'         // current item
-        } else {
-          item.style.display = 'none'
-        }
-      }
-      $('status').innerText = `${count} ${count === 1 ? 'träff' : 'träffar'}`
+      const strs = hashStr.split(/\s*,\s*/).filter(x=>x)
+      const regexes = (strs.length ? strs : ['']).map(regexify)
+      const i = index.filter(([elem, text]) => {
+        const isMatch = regexes.some(regex => regex.test(text) !== regex.not)
+        elem.style.display = isMatch ? 'inline-block' : 'none'
+        return isMatch
+      }).length
+      $('status').innerText = `${i} ${i === 1 ? 'träff' : 'träffar'}`
     }
   </script>
 </form>
