@@ -22,10 +22,14 @@
   body{margin:0}
   summary{
     cursor:pointer;
-    border-radius:6px;
+    border-radius:4px;
+    padding:1px 5px;
+    margin:-1px -5px;
+    box-decoration-break:clone;
     &:hover{
       background:#0002;
-      box-shadow:4px 0 #0002,-4px 0 #0002;
+      box-shadow:0 0 12px #0001 inset,0 0 24px #0001 inset;
+      background:#0001;
     }
   }
   form{
@@ -40,7 +44,7 @@
       font-size:inherit;
       border:1px solid #000;border-radius:40px;
       margin:4px;
-      width:calc(100% - 48px);
+      width:calc(100% - 50px);
       box-sizing:border-box;
       padding:8px 24px 8px calc(24px + 24px);
       background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="m22 24-8-8 2-2 8 8zM16.1 9.4a6.7 6.7 0 1 0-13.4 0 6.7 6.7 0 0 0 13.4 0zm2.7 0A9.4 9.4 0 1 1 0 9.4a9.4 9.4 0 0 1 18.8 0z" fill="%23888"/></svg>') no-repeat 14px 8px #fff;
@@ -99,8 +103,8 @@
     color:#008;
     text-decoration:underline 2px #0085;
     border-radius:4px;
-    padding:2px 4px;
-    margin:-2px -4px;
+    padding:2px 5px;
+    margin:-2px -5px;
     box-decoration-break:clone;
     &:hover{
       text-decoration-color:#0088;
@@ -130,7 +134,7 @@
     & path[class]{display:none}
     & details{
       ul{padding-left:1em;margin:0}
-      summary{margin-left:-1em}
+      summary{margin-left:calc(-1em + -5px)}
       padding-left:1em;
     }
     background:#fff;
