@@ -268,8 +268,6 @@
         <li>Varje bild ska visa vilka översättningar som hör ihop med den
           bilden
         <li>”Utförda korrigeringar” och ”Varningar” ska länka till lexikonet
-        <li>Varje kategori under ”Utförda korrigeringar” ska presenteras som
-          egna separata (expanderbara) undermenyer
       </ul>
     </details>
     <details>
@@ -3416,9 +3414,11 @@ kök 3		Same as 'kök 1'.
   function logErrs(id, title, errs) {
     if (errs.length === 0) { return }
     $(id).insertAdjacentHTML('beforeend', [
-      `${title} (${errs.length})`,
-      '<ul>', ...errs.map(x => '<li>' + x), '</ul>',
-    ].join(''))
+      '<details>', [
+        `<summary>${title} (${errs.length})</summary>`,
+        '<ul>', ...errs.map(x => '<li>' + x), '</ul>'],
+      '</details>',
+    ].flat(Infinity).join(''))
   }
 
   // Read lexicon from '#data' element content.
