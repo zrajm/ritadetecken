@@ -157,6 +157,7 @@
     onkeydown=event.stopPropagation()
     oninput=location.hash=urlEncode(this.value)>
   <script type=module>
+    // Show/hide form when scrolling.
     const $form = $('search')
     window.showForm = (show = true) => { // global function
       let e = document.activeElement
@@ -171,28 +172,25 @@
     })
   </script>
   <script type=module>
+    // Perform search (on pageload & hashchange).
     addEventListener('hashchange', search)
     addEventListener('load', search)
-
     // Turn search substring into regex, with additional 'not' attribute (for
     // negative matching).
     const regexify = x => {
-      let attr = { not: false, whole: false }
-      let attrName
-      const attrNames = { '-': 'not', '=': 'whole' }
-      while (attrName = attrNames[x[0]]) {
-        attr[attrName] = !attr[attrName]
+      let attrName, attr = { not: false, whole: false }
+      const prefixes = { '-': 'not', '=': 'whole' }
+      while (attrName = prefixes[x[0]]) { // while 1st char is prefix
+        attr[attrName] = !attr[attrName]  //   toggle attribute
         x = x.slice(1)
       }
-      const regex = RegExp(
+      return Object.assign(RegExp(
         (attr.whole ? '^' : '')
           + '(?<![\\p{L}\\p{N}_])'
           + x.replace(/[$^\]\[{}()|?*+]/g, x => ({'*':'.*?'}[x] || '\\'+x))
           + (attr.whole ? '\\s*[0-9]*\\s*(?:\\([^()]*\\)|\\[[^\\[\\]]*\\])?$' : ''),
-        'umi')
-      return Object.assign(regex, { not: attr.not })
+        'umi'), { not: attr.not })
     }
-
     const $q = $('q')
     const index = [...$('result').children].map(
       t => [t, t.innerHTML.replace(/<[^>]*>/gu, '\n').trim()])
