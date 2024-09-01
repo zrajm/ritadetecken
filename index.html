@@ -211,9 +211,9 @@
       // Find matching <div> and show them, and also show their parent element.
       const substrs = str.split(/\s*,\s*/).filter(x=>x)
       const regexes = (substrs.length ? substrs : ['']).map(regexify)
-      const i = index.filter(([elem, text]) => {
-        const isMatch = regexes.some(regex => regex.test(text) !== regex.not)
-        elem.style.display = isMatch ? 'inline-block' : 'none'
+      const i = index.filter(([t, txt]) => {
+        const isMatch = regexes.some(regex => regex.test(txt) !== regex.not)
+        t.style.display = isMatch ? 'inline-block' : 'none'
         return isMatch
       }).length
       $('status').innerText = `${i} ${i === 1 ? 'träff' : 'träffar'}`
@@ -3416,7 +3416,7 @@ kök 3		Same as 'kök 1'.
     $(id).insertAdjacentHTML('beforeend', [
       '<details>', [
         `<summary>${title} (${errs.length})</summary>`,
-        '<ul>', ...errs.map(x => '<li>' + x), '</ul>'],
+        '<ul>', errs.map(x => '<li>' + x), '</ul>'],
       '</details>',
     ].flat(Infinity).join(''))
   }
@@ -3637,10 +3637,12 @@ kök 3		Same as 'kök 1'.
       ? 'https://zrajm.github.io'
       : 'http://zrajm.github.devel'
   ) + '/teckentranskription/lexicon.html#'
-  for (const el of document.querySelectorAll('a:not([href])')) {
-    el.target = '_blank'
-    el.href = `${lexUrl}="${encodeURIComponent(el.innerText)}"`
-    el.title = 'Länk till teckenspråkslexikon. (Öppnas i ny flik.)'
+  for (const t of document.querySelectorAll('a:not([href])')) {
+    Object.assign(t, {
+      target: '_blank',
+      href: `${lexUrl}="${encodeURIComponent(t.innerText)}"`,
+      title: 'Länk till teckenspråkslexikon. (Öppnas i ny flik.)',
+    })
   }
 </script>
 <!--[eof]-->
