@@ -113,7 +113,8 @@
     }
   }
   #menu{
-    position:fixed;z-index:1;right:0;top:0;
+    position:absolute;z-index:1;right:0;top:0;
+    &[open]{position:fixed}
     margin:6px 4px;
     overflow:auto;max-height:calc(100% - (6px * 2));box-sizing:border-box;
     overscroll-behavior:none;
@@ -219,117 +220,117 @@
       $('status').innerText = `${i} ${i === 1 ? 'träff' : 'träffar'}`
     }
   </script>
+  <details id=menu onclick=event.stopPropagation()>
+    <summary><svg height="24" width="24">
+      <path class="menu" d="M3,3h18v3H3zm0,7h18v3H3zm0,7h18v3H3z"/>
+      <path class="close" d="M3,4l2,-2l7,7l7,-7l2,2l-7,7l7,7l-2,2l-7,-7l-7,7l-2,-2l7,-7z"/>
+    </svg></summary>
+    <details>
+      <summary>Om</summary>
+
+      <p>Bilder
+      från <a href="https://www.ritadetecken.se/">ritadetecken.se</a>.
+
+      <p>Det finns kommentarer för varje tecken där fel eller konstigheter har
+      hittats, och där det är möjligt har felen också korrigerats. För varje
+      tecken kan du se både <a href="#kommentar:">kommentarer</a> och
+      vilka <a href="#korrigering:">korrigeringar</a> som applicerats. Det
+      finns också listor på vilka korrigeringar som utförts under ”Errata”
+      ovan.
+
+      <p>Korrigeringar som utförts är:
+
+      <ul>
+        <li>Samma bild används ibland för flera olika tecken – här har de
+          kombinerats. I somliga fall har flera bilder som bara skiljer sig
+          obetydligt från varandra, i dessa fall har den ”bästa” bilder valts
+          ut här.
+        <li>De svenska uppslagsorden gjort mer enhetliga. Lemma-nummer, som
+          används när det finns fler än ett tecken som motsvarar ett svenskt
+          ord (som till exempel ”få 1” och ”få 2”) separeras alltid från det
+          svenska ordet med ett mellanslag (eller understryk om uppslagsordet
+          skrivs med siffror).
+        <li><a href="#bildfel">Bildfel</a> har markerats med en röd bård.
+      </ul>
+    </details>
+    <details>
+      <summary>Att-göra</summary>
+      <details>
+        <summary>Webbgränssnitt</summary>
+        <ul>
+          <li>Genväg för länkar
+            till <a href="https://www.spreadthesign.com/">spreadthesign.com</a>
+            (precis som <tt>&lt;a&gt;</tt> tagg utan <tt>href</tt> kan användas
+            för att länka till lexikonet, hitta på någon annan kortform för
+            spreadthesign.
+          <li>PageUp/PageDown ska funka för att skrolla även när textfältet är
+            markerat
+          <li>Varje bild ska visa vilka översättningar som hör ihop med den
+            bilden
+          <li>”Utförda korrigeringar” och ”Varningar” ska länka till lexikonet
+        </ul>
+      </details>
+      <details>
+        <summary>Data</summary>
+        <ul>
+          <li>Kolla att allt i 'EXIST-NOT' är inkluderat
+          <li>Kolla alla '!!' (betyder det att det ej finns i svenskt
+            teckenspråks­lexikon?)
+          <li>Lägg till Anki-ID-nummer där de saknas
+          <hr>
+          <li>Varje översättning ska efterföljas av en <i>Svenskt
+            teckenspråks­lexikon</i>-ID (inom ’[…]’) – ID-numren kan hittas
+            automatiskt genom att söka efter både transkription och svensk
+            översättning
+          <li>Alla översättningar som inte finns i <i>Svenskt
+            teckenspråks­lexikon</i> ska efterföljas av ’[🛇]’
+          <hr>
+          <li>Lägg till alla synonymer ifrån <i>Svensk teckenspråks­lexikon</i>
+            som inte finns i <i>Ritade tecken</i> (markerade med <i>kursiv
+            stil</i> eller liknande, så att det syns att de inte finns med
+            i <i>Ritade tecken</i>)
+          <hr>
+          <li>Finns det fler tecken vars bilder är så lika att de borde
+            kombineras till ett och samma uppslagsord?
+          <li>Skicka lista med tecken som bara finns i <i>Ritade tecken</i>
+            till <i>Svenskt teckenspråks­lexikon</i>, så de kan fundera över på
+            om det vill lägga till orden de saknar
+          <hr>
+          <li>Lägg till ’[höjda ögonbryn]’ resp. ’[sänkta ögonbryn]’ efter
+            transkription i tecken där detta saknas
+          <hr>
+          <li>Se över 'frö; medel 2 (!); mjöl; pulver; sand [!]' -> flytta
+            'sand [!]' till 'grus; jord'
+          <hr>
+          <li><a href="#bildfel!">felaktiga bilder</a> (hovra för detaljer)
+            <ul>
+              <li>􌥔􌥙􌥈􌥈􌥓􌥙􌤟􌥼􌥣􌥲􌦊 <a href="#snöre">snöre</a> (Bild saknar rörelse för ena handen. Se: <a href="#*snöre*,=spelar ingen roll,*tråd*">*snöre*,spelar ingen roll,*tråd*</a>).
+              <li><a href="#=öra,=öron">öra,öron</a> – bilderna är omkastade
+              <li><a href="#välja 2">välja 2</a> har fel bild; ska ha samma som <a href="#=val (politiskt)">val (politiskt)</a>
+              <li>'kappa 1' & 'kappa 2' är samma
+            </ul>
+          <li><a href="#?">tveksamma bilder</a> (hovra för detaljer)
+            <ul>
+              <li><a href="#deras,dess">􌤢􌤵􌥗􌥵􌥪  deras, dess</a> (vad göra med dessa?)
+            </ul>
+          <li>Samma bild kan användas
+            <ul>
+              <li>􌤪􌤴􌥙􌤪􌤴􌥙􌥱􌦀􌥼􌥻 <a href="#=cykel 2,=cykla 2,=sparkstötting">cykel 2,cykla 2,sparkstötting</a>
+                (Jag tror dessa är olika och inte ska kombineras.)
+              <li>􌤵􌥘􌥃􌥃􌤵􌥘􌥫􌥺 <a href="#=fjäril,=ängel">fjäril,ängel</a> (Bilden för ’ängel’ är fel, men ’fjäril’-bilden kan användas för bägge.)
+              <li><a href="#=deras,=sin">􌤢􌤵􌥗􌦄􌥪􌥻 deras, sin</a>
+            </ul>
+          <li><b>Tecken som inte finns i <i>Svenskt teckenspråkslexikon</i></b> (skillnader mellan TAKK och svenskt teckenspråk?)
+            <ul>
+              <li><a href="#=manus">􌥃􌥔􌥘􌥃􌥓􌥘􌤟􌥣􌥼􌥻 manus</a> (<a>􌤢􌥔􌤸􌤩􌤴􌥙􌤟􌥣􌥼􌥻</a> eller <a>􌤴􌥗􌥋􌥋􌤴􌤶􌤟􌥼􌥹􌦉􌥼􌥧􌥼􌦅􌥼􌤟</a> i lexikon)
+            </ul>
+        </ul>
+      </details>
+    </details>
+    <details id=errata><summary>Varningar</summary></details>
+    <details id=log><summary>Utförda korrigeringar</summary></details>
+  </details>
 </form>
-<details id=menu onclick=event.stopPropagation()>
-  <summary><svg height="24" width="24">
-    <path class="menu" d="M3,3h18v3H3zm0,7h18v3H3zm0,7h18v3H3z"/>
-    <path class="close" d="M3,4l2,-2l7,7l7,-7l2,2l-7,7l7,7l-2,2l-7,-7l-7,7l-2,-2l7,-7z"/>
-  </svg></summary>
-  <details>
-    <summary>Om</summary>
-
-    <p>Bilder från <a href="https://www.ritadetecken.se/">ritadetecken.se</a>.
-
-    <p>Det finns kommentarer för varje tecken där fel eller konstigheter har
-    hittats, och där det är möjligt har felen också korrigerats. För varje
-    tecken kan du se både <a href="#kommentar:">kommentarer</a> och
-    vilka <a href="#korrigering:">korrigeringar</a> som applicerats. Det finns
-    också listor på vilka korrigeringar som utförts under ”Errata” ovan.
-
-    <p>Korrigeringar som utförts är:
-
-    <ul>
-      <li>Samma bild används ibland för flera olika tecken – här har de
-        kombinerats. I somliga fall har flera bilder som bara skiljer sig
-        obetydligt från varandra, i dessa fall har den ”bästa” bilder valts ut
-        här.
-      <li>De svenska uppslagsorden gjort mer enhetliga. Lemma-nummer, som
-        används när det finns fler än ett tecken som motsvarar ett svenskt ord
-        (som till exempel ”få 1” och ”få 2”) separeras alltid från det svenska
-        ordet med ett mellanslag (eller understryk om uppslagsordet skrivs med
-        siffror).
-      <li><a href="#bildfel">Bildfel</a> har markerats med en röd bård.
-    </ul>
-  </details>
-  <details>
-    <summary>Att-göra</summary>
-    <details>
-      <summary>Webbgränssnitt</summary>
-      <ul>
-        <li>Menyns hamburgerikon ska inte vara låst till i övre högra hörnet,
-          utan befinna sig i (och försvinna med) sökformuläret när man skrollar
-        <li>Genväg för länkar
-          till <a href="https://www.spreadthesign.com/">spreadthesign.com</a>
-          (precis som <tt>&lt;a&gt;</tt> tagg utan <tt>href</tt> kan användas
-          för att länka till lexikonet, hitta på någon annan kortform för
-          spreadthesign.
-        <li>PageUp/PageDown ska funka för att skrolla även när textfältet är
-          markerat
-        <li>Varje bild ska visa vilka översättningar som hör ihop med den
-          bilden
-        <li>”Utförda korrigeringar” och ”Varningar” ska länka till lexikonet
-      </ul>
-    </details>
-    <details>
-      <summary>Data</summary>
-      <ul>
-        <li>Kolla att allt i 'EXIST-NOT' är inkluderat
-        <li>Kolla alla '!!' (betyder det att det ej finns i svenskt
-          teckenspråks­lexikon?)
-        <li>Lägg till Anki-ID-nummer där de saknas
-        <hr>
-        <li>Varje översättning ska efterföljas av en <i>Svenskt
-          teckenspråks­lexikon</i>-ID (inom ’[…]’) – ID-numren kan hittas
-          automatiskt genom att söka efter både transkription och svensk
-          översättning
-        <li>Alla översättningar som inte finns i <i>Svenskt
-          teckenspråks­lexikon</i> ska efterföljas av ’[🛇]’
-        <hr>
-        <li>Lägg till alla synonymer ifrån <i>Svensk teckenspråks­lexikon</i>
-          som inte finns i <i>Ritade tecken</i> (markerade med <i>kursiv
-          stil</i> eller liknande, så att det syns att de inte finns med
-          i <i>Ritade tecken</i>)
-        <hr>
-        <li>Finns det fler tecken vars bilder är så lika att de borde
-          kombineras till ett och samma uppslagsord?
-        <li>Skicka lista med tecken som bara finns i <i>Ritade tecken</i>
-          till <i>Svenskt teckenspråks­lexikon</i>, så de kan fundera över på
-          om det vill lägga till orden de saknar
-        <hr>
-        <li>Lägg till ’[höjda ögonbryn]’ resp. ’[sänkta ögonbryn]’ efter
-          transkription i tecken där detta saknas
-        <hr>
-        <li>Se över 'frö; medel 2 (!); mjöl; pulver; sand [!]' -> flytta 'sand
-          [!]' till 'grus; jord'
-        <hr>
-        <li><a href="#bildfel!">felaktiga bilder</a> (hovra för detaljer)
-          <ul>
-            <li>􌥔􌥙􌥈􌥈􌥓􌥙􌤟􌥼􌥣􌥲􌦊 <a href="#snöre">snöre</a> (Bild saknar rörelse för ena handen. Se: <a href="#*snöre*,=spelar ingen roll,*tråd*">*snöre*,spelar ingen roll,*tråd*</a>).
-            <li><a href="#=öra,=öron">öra,öron</a> – bilderna är omkastade
-            <li><a href="#välja 2">välja 2</a> har fel bild; ska ha samma som <a href="#=val (politiskt)">val (politiskt)</a>
-            <li>'kappa 1' & 'kappa 2' är samma
-          </ul>
-        <li><a href="#?">tveksamma bilder</a> (hovra för detaljer)
-          <ul>
-            <li><a href="#deras,dess">􌤢􌤵􌥗􌥵􌥪  deras, dess</a> (vad göra med dessa?)
-          </ul>
-        <li>Samma bild kan användas
-          <ul>
-            <li>􌤪􌤴􌥙􌤪􌤴􌥙􌥱􌦀􌥼􌥻 <a href="#=cykel 2,=cykla 2,=sparkstötting">cykel 2,cykla 2,sparkstötting</a>
-              (Jag tror dessa är olika och inte ska kombineras.)
-            <li>􌤵􌥘􌥃􌥃􌤵􌥘􌥫􌥺 <a href="#=fjäril,=ängel">fjäril,ängel</a> (Bilden för ’ängel’ är fel, men ’fjäril’-bilden kan användas för bägge.)
-            <li><a href="#=deras,=sin">􌤢􌤵􌥗􌦄􌥪􌥻 deras, sin</a>
-          </ul>
-        <li><b>Tecken som inte finns i <i>Svenskt teckenspråkslexikon</i></b> (skillnader mellan TAKK och svenskt teckenspråk?)
-          <ul>
-            <li><a href="#=manus">􌥃􌥔􌥘􌥃􌥓􌥘􌤟􌥣􌥼􌥻 manus</a> (<a>􌤢􌥔􌤸􌤩􌤴􌥙􌤟􌥣􌥼􌥻</a> eller <a>􌤴􌥗􌥋􌥋􌤴􌤶􌤟􌥼􌥹􌦉􌥼􌥧􌥼􌦅􌥼􌤟</a> i lexikon)
-          </ul>
-      </ul>
-    </details>
-  </details>
-  <details id=errata><summary>Varningar</summary></details>
-  <details id=log><summary>Utförda korrigeringar</summary></details>
-</details>
 
 <!--
     Dictionary data (from ritadetecken.se). Columns are: Random ID (used for
