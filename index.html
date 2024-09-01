@@ -256,11 +256,6 @@
       <details>
         <summary>Webbgränssnitt</summary>
         <ul>
-          <li>Genväg för länkar
-            till <a href="https://www.spreadthesign.com/">spreadthesign.com</a>
-            (precis som <tt>&lt;a&gt;</tt> tagg utan <tt>href</tt> kan användas
-            för att länka till lexikonet, hitta på någon annan kortform för
-            spreadthesign.
           <li>PageUp/PageDown ska funka för att skrolla även när textfältet är
             markerat
           <li>Varje bild ska visa vilka översättningar som hör ihop med den
@@ -3631,16 +3626,26 @@ kök 3		Same as 'kök 1'.
 
 <script type=module>
   // Make <a> tags without 'href' point to lexicon.
-  const lexUrl = (
-    /^https:/.test(location)
-      ? 'https://zrajm.github.io'
-      : 'http://zrajm.github.devel'
-  ) + '/teckentranskription/lexicon.html#'
+  const places = {
+    zrajm: {
+      name: 'teckenspråkslexikon',
+      url: (
+        /^https:/.test(location)
+          ? 'https://zrajm.github.io'
+          : 'http://zrajm.github.devel'
+      ) + '/teckentranskription/lexicon.html#="%s"',
+    },
+    spreadthesign: {
+      name: 'spreadthesign',
+      url: 'https://www.spreadthesign.com/sv.se/search/?q=%s',
+    },
+  }
   for (const t of document.querySelectorAll('a:not([href])')) {
+    const service = places[t.hasAttribute('spreadthesign') ? 'spreadthesign' : 'zrajm']
     Object.assign(t, {
       target: '_blank',
-      href: `${lexUrl}="${encodeURIComponent(t.innerText)}"`,
-      title: 'Länk till teckenspråkslexikon. (Öppnas i ny flik.)',
+      href: service.url.replace(/%s/gu, encodeURIComponent(t.innerText)),
+      title: `Länk till ${service.name}. (Öppnas i ny flik.)`,
     })
   }
 </script>
