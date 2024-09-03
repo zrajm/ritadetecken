@@ -3609,7 +3609,7 @@ kök 3		Same as 'kök 1'.
       (img.length > 1 ? '[kombinerad]' : ''),
       '<span class=transcr>', [
         trans.map(x =>        // link transcriptions (exclude leading '/')
-          x.replace(/((?!\u{10c960})[\u{10c900}-\u{10c9ff}]+)/gu, '<a>$&</a>')
+          x.replace(/((?!\u{10c960})[\u{10c900}-\u{10c9ff}]+)/gu, `<a to=field>$&</a>`)
         ).join('<br>')],
       '</span>',
       swe.sort(by_swedish).map(x =>
@@ -3626,22 +3626,20 @@ kök 3		Same as 'kök 1'.
 
 <script type=module>
   // Make <a> tags without 'href' point to lexicon.
+  const lexiconUrl = (
+    /^https:/.test(location)
+      ? 'https://zrajm.github.io'
+      : 'http://zrajm.github.devel') + '/teckentranskription/lexicon.html'
   const places = {
-    zrajm: {
-      name: 'teckenspråkslexikon',
-      url: (
-        /^https:/.test(location)
-          ? 'https://zrajm.github.io'
-          : 'http://zrajm.github.devel'
-      ) + '/teckentranskription/lexicon.html#="%s"',
-    },
+    word: { name: 'teckenspråkslexikon', url: `${lexiconUrl}#%s` },
+    field: { name: 'teckenspråkslexikon', url: `${lexiconUrl}#="%s"` },
     spreadthesign: {
-      name: 'spreadthesign',
+      name: 'Spreadthesign',
       url: 'https://www.spreadthesign.com/sv.se/search/?q=%s',
     },
   }
   for (const t of document.querySelectorAll('a:not([href])')) {
-    const service = places[t.hasAttribute('spreadthesign') ? 'spreadthesign' : 'zrajm']
+    const service = places[t.getAttribute('to') ?? 'word'] 
     Object.assign(t, {
       target: '_blank',
       href: service.url.replace(/%s/gu, encodeURIComponent(t.innerText)),
