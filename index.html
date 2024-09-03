@@ -3404,6 +3404,12 @@ kök 3		Same as 'kök 1'.
     (a, x, i, w) => [a, x].join(w.length - i > 1 ? ', ' : ' och '))
   const unbracket = a => a.map(x => x.replace(/\s*\[.*?\]$/, ''))
   const entryName = a => '”' + unbracket(a.swe).sort(by_swedish).join('; ') + '”'
+  const linkifyTranscriptions = x => x.replace( // wrap transcription in <a>
+    /(?!\u{10c960})[\u{10c900}-\u{10c9ff}]+/gu,
+    x => '<a to=field>' + wrapTranscription(x) + '</a>')
+  const wrapTranscription = x => x.replace( // wrap transcr segments in <nobr>
+    /[\u{10c900}-\u{10c95f}\u{10c961}-\u{10c9ff}]+\u{10c960}?/gu,
+    '<nobr>$&</nobr>')
 
   function logErrs(id, title, errs) {
     if (errs.length === 0) { return }
@@ -3607,19 +3613,21 @@ kök 3		Same as 'kök 1'.
         }),
         '</div>'],
       (img.length > 1 ? '[kombinerad]' : ''),
-      '<span class=transcr>', [
-        trans.map(x =>        // link transcriptions (exclude leading '/')
-          x.replace(/((?!\u{10c960})[\u{10c900}-\u{10c9ff}]+)/gu, `<a to=field>$&</a>`)
-        ).join('<br>')],
-      '</span>',
+      `<span class=transcr>${trans.map(linkifyTranscriptions).join('<br>')}</span>`,
       swe.sort(by_swedish).map(x =>
         x.replace(/(?<=\[)(\d{5}|🛇)(?=\])/gu, x =>
           x === '🛇'
             ? '<span title="Saknas i Svenskt teckenspråkslexikon.">🛇</span>'
             : `<a>${x}</a>`)
       ).join('<br>'),
-      log && `<small class=log>Korrigering: ${log}</small>`,
-      err && `<small class=note>Kommentar: ${err}${img.some(x => /!$/.test(x[0])) ? ' (bildfel)' : ''}</small>`],
+      log &&
+        `<small class=log>Korrigering: ${linkifyTranscriptions(log)}</small>`,
+      err && [
+        '<small class=note>Kommentar: ', [
+          linkifyTranscriptions(err),
+          (img.some(x => /!$/.test(x[0])) ? ' (bildfel)' : '')],
+        '</small>'],
+    ],
     '</div>',
   ]).flat(Infinity).join('')
 </script>
